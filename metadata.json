@@ -1,0 +1,6 @@
+{
+  "name": "COINPIPS - Financial Markets & Trading Signals Terminal",
+  "description": "Professional financial markets terminal, live TradingView charts, real-time crypto, forex, stocks, indices & commodities signals, and VIP trading intelligence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

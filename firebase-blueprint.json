@@ -1,0 +1,228 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile storing account information, membership tier, and preferences",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Authentication user ID",
+          "maxLength": 128
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User full name or display handle",
+          "maxLength": 80
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address",
+          "maxLength": 120
+        },
+        "membership": {
+          "type": "string",
+          "description": "User subscription tier (free or vip)",
+          "enum": ["free", "vip"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Account registration timestamp",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Profile last update timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["uid", "email", "membership"]
+    },
+    "WatchlistItem": {
+      "title": "WatchlistItem",
+      "description": "Individual financial instrument tracked in user watchlist",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user ID",
+          "maxLength": 128
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Financial ticker symbol (e.g. BTCUSDT, EURUSD, AAPL)",
+          "maxLength": 32
+        },
+        "name": {
+          "type": "string",
+          "description": "Instrument full descriptive name",
+          "maxLength": 80
+        },
+        "assetClass": {
+          "type": "string",
+          "description": "Asset category",
+          "enum": ["crypto", "forex", "stock", "indices", "commodities"]
+        },
+        "addedAt": {
+          "type": "string",
+          "description": "Timestamp when added to watchlist",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId", "symbol", "name", "assetClass"]
+    },
+    "Signal": {
+      "title": "Signal",
+      "description": "Financial market trading signal calculated by technical analysis engine",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique signal identifier",
+          "maxLength": 64
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Trading instrument symbol",
+          "maxLength": 32
+        },
+        "name": {
+          "type": "string",
+          "description": "Trading instrument name",
+          "maxLength": 80
+        },
+        "assetClass": {
+          "type": "string",
+          "description": "Market asset class",
+          "enum": ["crypto", "forex", "stock", "indices", "commodities"]
+        },
+        "direction": {
+          "type": "string",
+          "description": "Trading bias direction",
+          "enum": ["BUY", "SELL", "NEUTRAL", "STRONG_BUY", "STRONG_SELL"]
+        },
+        "entryPrice": {
+          "type": "number",
+          "description": "Target entry price"
+        },
+        "entryZone": {
+          "type": "string",
+          "description": "Price entry range",
+          "maxLength": 64
+        },
+        "stopLoss": {
+          "type": "number",
+          "description": "Risk stop-loss price"
+        },
+        "takeProfit1": {
+          "type": "number",
+          "description": "First take profit level"
+        },
+        "takeProfit2": {
+          "type": "number",
+          "description": "Second take profit level"
+        },
+        "takeProfit3": {
+          "type": "number",
+          "description": "Third take profit level"
+        },
+        "riskRewardRatio": {
+          "type": "string",
+          "description": "Calculated risk to reward ratio",
+          "maxLength": 16
+        },
+        "timeframe": {
+          "type": "string",
+          "description": "Analysis chart timeframe",
+          "maxLength": 16
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Technical analysis rationale and indicator setup",
+          "maxLength": 500
+        },
+        "isVip": {
+          "type": "boolean",
+          "description": "Flag indicating if signal is VIP exclusive"
+        },
+        "status": {
+          "type": "string",
+          "description": "Signal lifecycle status",
+          "enum": ["ACTIVE", "HIT_TARGET", "STOPPED_OUT", "EXPIRED", "CANCELLED"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Signal generation timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "symbol", "assetClass", "direction", "status"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "Customer support and inquiry ticket",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Ticket ID",
+          "maxLength": 64
+        },
+        "userId": {
+          "type": "string",
+          "description": "Author user ID",
+          "maxLength": 128
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Author email",
+          "maxLength": 120
+        },
+        "subject": {
+          "type": "string",
+          "description": "Ticket subject line",
+          "maxLength": 120
+        },
+        "message": {
+          "type": "string",
+          "description": "Inquiry details",
+          "maxLength": 1000
+        },
+        "category": {
+          "type": "string",
+          "description": "Support category",
+          "maxLength": 40
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of support inquiry",
+          "enum": ["open", "in_progress", "resolved"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Ticket submission timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "userId", "userEmail", "subject", "message", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Individual user profile records"
+    },
+    "/users/{userId}/watchlist/{symbol}": {
+      "schema": "WatchlistItem",
+      "description": "User specific watchlist entries"
+    },
+    "/signals/{signalId}": {
+      "schema": "Signal",
+      "description": "Market technical signals"
+    },
+    "/supportTickets/{ticketId}": {
+      "schema": "SupportTicket",
+      "description": "User customer service inquiries"
+    }
+  }
+}
